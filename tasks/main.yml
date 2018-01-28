@@ -18,6 +18,15 @@
     state: present
   with_items: "{{ sshd_packages }}"
 
+- name: Ensure SSH run dir exists
+  file:
+    path: "/var/run/sshd"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: 0755
+  when: ansible_distribution_major_version|int == 16
+
 - name: Configuration
   template:
     src: sshd_config.j2
